@@ -1,3 +1,3 @@
 # Go to clover field
-self.goToField("clover")
+self.runPath("cannon_to_field/pineapple")
 # I just put something random here as a filler until the path is created
