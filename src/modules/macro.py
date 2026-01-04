@@ -2281,6 +2281,9 @@ class macro:
                     self.logger.webhook("", "Sticker Stack on cooldown", "dark brown", "screen")
                     return
                 self.claimStickerStack()
+            elif objective == "honeystorm":
+                # Honey storm logic is handled in the path file
+                pass
             else:
                 time.sleep(0.1)
                 self.logger.webhook("", f"Collected: {displayName}", "bright green", "screen")
@@ -2700,7 +2703,16 @@ class macro:
         self.saveTiming("coconut_crab")
         self.reset()
 
-    
+    def kingBeetle(self):
+        self.cannon()
+        self.logger.webhook("","Travelling: King Beetle","dark brown")
+        self.runPath("boss/king_beetle")
+
+    def tunnelBear(self):
+        self.cannon()
+        self.logger.webhook("","Travelling: Tunnel Bear","dark brown")
+        self.runPath("boss/tunnel_bear")
+
     def goToPlanter(self, planter, field, method):
         global finalKey
         self.cannon()

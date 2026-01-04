@@ -522,14 +522,28 @@ def macro(status, logQueue, updateGUI, run, skipTask):
             if taskId.startswith("kill_"):
                 mob = taskId.replace("kill_", "")
                 
-                # Special cases: coconut_crab and stump_snail
+                # Special cases: coconut_crab, stump_snail, king_beetle, and tunnel_bear
                 if mob == "coconut_crab":
                     if macro.setdat["coconut_crab"] and macro.hasRespawned("coconut_crab", 36*60*60, applyMobRespawnBonus=True):
                         macro.coconutCrab()
                         executedTasks.add(taskId)
                         return True
                     return False
-                
+
+                if mob == "king_beetle":
+                    if macro.setdat["king_beetle"] and macro.hasRespawned("king_beetle", 24*60*60, applyMobRespawnBonus=True):
+                        macro.kingBeetle()
+                        executedTasks.add(taskId)
+                        return True
+                    return False
+
+                if mob == "tunnel_bear":
+                    if macro.setdat["tunnel_bear"] and macro.hasRespawned("tunnel_bear", 24*60*60, applyMobRespawnBonus=True):
+                        macro.tunnelBear()
+                        executedTasks.add(taskId)
+                        return True
+                    return False
+
                 if mob == "stump_snail":
                     if macro.setdat["stump_snail"] and macro.hasRespawned("stump_snail", 96*60*60, applyMobRespawnBonus=True):
                         runTask(macro.stumpSnail)
