@@ -49,6 +49,41 @@ def clearManualPlanters():
     settingsManager.clearFile("./data/user/manualplanters.txt")
 
 @eel.expose
+def reset_timings():
+    """Reset all activity timings to 0"""
+    try:
+        # Read the current timings file
+        timings_file = "./data/user/timings.txt"
+        if os.path.exists(timings_file):
+            # Create a backup of current timings
+            backup_file = "./data/user/timings_backup.txt"
+            import shutil
+            shutil.copy2(timings_file, backup_file)
+
+            # Reset all timings to 0
+            with open(timings_file, 'r') as f:
+                lines = f.readlines()
+
+            # Keep the format but set all values to 0
+            reset_lines = []
+            for line in lines:
+                if '=' in line:
+                    key = line.split('=')[0].strip()
+                    reset_lines.append(f"{key}=0\n")
+                else:
+                    reset_lines.append(line)
+
+            with open(timings_file, 'w') as f:
+                f.writelines(reset_lines)
+
+            return True
+        else:
+            return False
+    except Exception as e:
+        print(f"Error resetting timings: {e}")
+        return False
+
+@eel.expose
 def getManualPlanterData():
     with open("./data/user/manualplanters.txt", "r") as f:
         planterDataRaw = f.read()

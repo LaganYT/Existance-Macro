@@ -883,6 +883,19 @@ function resetZoom() {
   updateImageTransform();
 }
 
+async function resetTimings() {
+  if (confirm("Are you sure you want to reset all timings? This will reset cooldown tracking for all activities.")) {
+    try {
+      await eel.reset_timings()();
+      alert("Timings have been reset!");
+      // Reload settings to update the UI
+      await loadAllSettings();
+    } catch (error) {
+      alert("Error resetting timings: " + error);
+    }
+  }
+}
+
 // Initialize zoom when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", initializeImageZoom);
