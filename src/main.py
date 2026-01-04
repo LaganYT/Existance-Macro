@@ -530,6 +530,7 @@ def macro(status, logQueue, updateGUI, run, skipTask):
                         return True
                     return False
 
+                # King Beetle respawns every 24 hours (20 hours 24 minutes with Gifted Vicious Bee)
                 if mob == "king_beetle":
                     if macro.setdat["king_beetle"] and macro.hasRespawned("king_beetle", 24*60*60, applyMobRespawnBonus=True):
                         macro.kingBeetle()
@@ -537,8 +538,9 @@ def macro(status, logQueue, updateGUI, run, skipTask):
                         return True
                     return False
 
+                # Tunnel Bear respawns every 48 hours (40 hours 48 minutes with Gifted Vicious Bee)
                 if mob == "tunnel_bear":
-                    if macro.setdat["tunnel_bear"] and macro.hasRespawned("tunnel_bear", 24*60*60, applyMobRespawnBonus=True):
+                    if macro.setdat["tunnel_bear"] and macro.hasRespawned("tunnel_bear", 48*60*60, applyMobRespawnBonus=True):
                         macro.tunnelBear()
                         executedTasks.add(taskId)
                         return True
