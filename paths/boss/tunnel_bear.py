@@ -24,3 +24,6 @@ while True:
     self.keyboard.walk("d", 0.25)
     sleep(1)
 sleep(1)
+# Collect rewards
+self.keyboard.walk("d", 1.5)
+self.keyboard.walk("a", 3)
