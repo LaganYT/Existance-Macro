@@ -2283,7 +2283,7 @@ class macro:
                 self.claimStickerStack()
             elif objective == "honeystorm":
                 # Honey storm logic is handled in the path file
-                pass
+                self.runPath("collect/honeystorm")
             else:
                 time.sleep(0.1)
                 self.logger.webhook("", f"Collected: {displayName}", "bright green", "screen")
@@ -2706,7 +2706,30 @@ class macro:
     def kingBeetle(self):
         self.cannon()
         self.logger.webhook("","Travelling: King Beetle","dark brown")
+        self.goToField("blue_flower")
         self.runPath("boss/king_beetle")
+##        while True:
+##            mouse.mouseDown()
+##            # just afk lol
+##            if self.died or self.bossStatus is not None: break
+##            if self.died:
+##                self.logger.webhook("", "Died to King Beetle", "dark brown", ping_category="ping_character_deaths")
+##                self.reset(convert=False)
+##                self.died = False
+##            elif self.bossStatus is not None:
+##                break
+        # Collect rewards
+        self.keyboard.walk("a", 1)
+        self.keyboard.walk("w", 3)
+        for i in range(4):
+            self.keyboard.walk("a", 0.25)
+            self.keyboard.walk("s", 2)
+            self.keyboard.walk("a", 0.25)
+            self.keyboard.walk("w", 2)
+            #credit to rubicorb.v2 for the path
+        time.sleep(1)
+        self.saveTiming("king_beetle")
+        self.reset()
 
     def tunnelBear(self):
         self.cannon()

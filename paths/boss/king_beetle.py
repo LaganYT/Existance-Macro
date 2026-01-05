@@ -1,3 +1,21 @@
-# Go to clover field
-self.runPath("cannon_to_field/blue flower")
-# I just put something random here as a filler until the path is created
+# get into area
+self.keyboard.keyDown("a")
+sleep(1)
+self.keyboard.keyUp("a")
+self.keyboard.keyDown("w")
+sleep(3)
+self.keyboard.keyUp("w")
+self.keyboard.keyDown("s")
+sleep(0.77)
+self.keyboard.keyUp("s")
+self.keyboard.keyDown("d")
+sleep(1.8)
+self.keyboard.press("space")
+sleep(5)
+self.keyboard.keyUp("d")
+#back right corner
+self.keyboard.keyDown("s")
+sleep(5)
+self.keyboard.keyUp("s")
+sleep(7)
+#credit to rubicorb.v2 for the path
