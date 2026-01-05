@@ -2284,6 +2284,11 @@ class macro:
             elif objective == "honeystorm":
                 # Honey storm logic is handled in the path file
                 self.runPath("collect/honeystorm")
+                self.saveTiming("honeystorm")
+                self.logger.webhook("", "Honey storm collected", "bright green", "screen")
+                self.reset(convert=True)
+                return
+                #credit to laganyt for the path
             else:
                 time.sleep(0.1)
                 self.logger.webhook("", f"Collected: {displayName}", "bright green", "screen")
