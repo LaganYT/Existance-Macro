@@ -12,9 +12,18 @@ sleep(1)
 self.keyboard.walk("d", 3)
 self.keyboard.walk("s", 0.5)
 
+start_time = time.time()
 while True:
+    # Check for 4 minute timeout (240 seconds)
+    if time.time() - start_time > 240:
+        self.logger.webhook("", "Tunnel Bear on cooldown", "dark brown", "screen")
+        break
+
     # Check if defeated
     if self.blueTextImageSearch("defeated") and self.blueTextImageSearch("tunnelbear"):
+        # Collect rewards
+        self.keyboard.walk("d", 1.5)
+        self.keyboard.walk("a", 3)
         break
     # Check if died
     if self.blueTextImageSearch("died"):
@@ -24,6 +33,3 @@ while True:
     self.keyboard.walk("d", 0.25)
     sleep(1)
 sleep(1)
-# Collect rewards
-self.keyboard.walk("d", 1.5)
-self.keyboard.walk("a", 3)
