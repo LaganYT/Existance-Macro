@@ -2713,16 +2713,7 @@ class macro:
         self.logger.webhook("","Travelling: King Beetle","dark brown")
         self.goToField("blue_flower")
         self.runPath("boss/king_beetle")
-##        while True:
-##            mouse.mouseDown()
-##            # just afk lol
-##            if self.died or self.bossStatus is not None: break
-##            if self.died:
-##                self.logger.webhook("", "Died to King Beetle", "dark brown", ping_category="ping_character_deaths")
-##                self.reset(convert=False)
-##                self.died = False
-##            elif self.bossStatus is not None:
-##                break
+        
         # Collect rewards
         self.keyboard.walk("a", 1)
         self.keyboard.walk("w", 3)
@@ -2739,7 +2730,16 @@ class macro:
     def tunnelBear(self):
         self.cannon()
         self.logger.webhook("","Travelling: Tunnel Bear","dark brown")
+        self.goToField("pineapple")
         self.runPath("boss/tunnel_bear")
+
+        # Collect rewards
+        self.keyboard.walk("d", 1.5)
+        self.keyboard.walk("a", 3)
+            #credit to laganyt and rubicorb.v2 for the path
+        time.sleep(1)
+        self.saveTiming("tunnel_bear")
+        self.reset()
 
     def goToPlanter(self, planter, field, method):
         global finalKey
