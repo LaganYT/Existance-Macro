@@ -9,7 +9,7 @@ self.keyboard.press(" ")
 self.keyboard.walk("a", 0.5)
 sleep(1)
 
-self.keyboard.walk("d", 3)
+self.keyboard.walk("d", 3.5)
 self.keyboard.walk("s", 0.5)
 
 start_time = time.time()
@@ -20,10 +20,12 @@ while True:
         break
 
     # Check if defeated
-    if self.blueTextImageSearch("defeated") and self.blueTextImageSearch("tunnelbear"):
+    if self.blueTextImageSearch("tunnelbear", 0.8):
         # Collect rewards
         self.keyboard.walk("d", 1.5)
         self.keyboard.walk("a", 3)
+        time.sleep(1)
+        self.saveTiming("tunnel_bear")
         break
     # Check if died
     if self.blueTextImageSearch("died"):
@@ -31,5 +33,5 @@ while True:
         break
     # Continue the movement pattern
     self.keyboard.walk("d", 0.25)
-    sleep(1)
+    sleep(0.75)
 sleep(1)

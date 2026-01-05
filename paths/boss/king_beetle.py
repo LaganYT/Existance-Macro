@@ -26,7 +26,7 @@ while True:
         break
 
     # Check if defeated
-    if self.blueTextImageSearch("defeated") and self.blueTextImageSearch("kingbeetle"):
+    if self.blueTextImageSearch("kingbeetle", 0.8):
         # Collect rewards
         self.keyboard.walk("a", 1)
         self.keyboard.walk("w", 3)
@@ -35,6 +35,8 @@ while True:
             self.keyboard.walk("s", 2)
             self.keyboard.walk("a", 0.25)
             self.keyboard.walk("w", 2)
+        time.sleep(1)
+        self.saveTiming("king_beetle")
         break
     # Check if died
     if self.blueTextImageSearch("died"):

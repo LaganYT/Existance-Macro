@@ -2732,8 +2732,6 @@ class macro:
         self.goToField("blue_flower")
         self.runPath("boss/king_beetle")
         #credit to rubicorb.v2 for the path
-        time.sleep(1)
-        self.saveTiming("king_beetle")
         self.reset()
 
     def tunnelBear(self):
@@ -2742,8 +2740,6 @@ class macro:
         self.goToField("pineapple")
         self.runPath("boss/tunnel_bear")
         #credit to laganyt and rubicorb.v2 for the path
-        time.sleep(1)
-        self.saveTiming("tunnel_bear")
         self.reset()
 
     def goToPlanter(self, planter, field, method):
