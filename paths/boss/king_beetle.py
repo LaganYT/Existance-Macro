@@ -9,9 +9,7 @@ self.keyboard.keyDown("s")
 sleep(1)
 self.keyboard.keyUp("s")
 self.keyboard.keyDown("d")
-sleep(1.8)
-self.keyboard.press("space")
-sleep(5)
+sleep(7.8)
 self.keyboard.keyUp("d")
 #back right corner
 self.keyboard.keyDown("s")
@@ -26,7 +24,7 @@ while True:
         break
 
     # Check if defeated
-    if self.blueTextImageSearch("kingbeetle", 0.8):
+    if self.blueTextImageSearch("kingbeetle", 0.55):
         # Collect rewards
         self.keyboard.walk("a", 1)
         self.keyboard.walk("w", 3)
