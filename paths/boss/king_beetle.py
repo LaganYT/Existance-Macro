@@ -29,7 +29,7 @@ while True:
         break
 
     # Check if defeated
-    if self.blueTextImageSearch("kingbeetle", 0.55):
+    if self.blueTextImageSearch("kingbeetle", 0.7):
         # Collect rewards
         self.keyboard.walk("a", 1)
         self.keyboard.walk("w", 3)
