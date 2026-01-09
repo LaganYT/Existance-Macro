@@ -20,13 +20,14 @@ self.keyboard.walk("s",0.8)
 reached = self.isBesideE(objectiveData[0])
 if not reached:
     self.logger.webhook("", "Failed to reach Honey Storm summon point", "dark brown", "screen")
-elif "(" and ":" in reached:
+elif "(" in reached and ":" in reached:
     cd = self.cdTextToSecs(reached, True, cooldownSeconds)
     if cd:
         cooldownFormat = timedelta(seconds=cd)
         self.logger.webhook("", f"Honey Storm is on cooldown ({cooldownFormat} remaining)", "dark brown", "screen")
     else:
-        # Execute honey storm actions
+        # Execute honey storm actions - add small delay to ensure stability after cooldown check
+        time.sleep(0.2)
         self.keyboard.press("e")
         time.sleep(0.5)
         self.keyboard.walk("s", 3)
