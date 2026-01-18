@@ -2716,18 +2716,7 @@ class macro:
         self.saveTiming("coconut_crab")
         self.reset()
 
-    def kingBeetleBackground(self):
-        while self.bossStatus is None:
-            if self.blueTextImageSearch("died"):
-                self.died = True
-            if self.blueTextImageSearch("kingbeetle", 0.8):
-                self.bossStatus = "defeated"
-
     def kingBeetle(self):
-        self.bossStatus = None
-        beetleThread = threading.Thread(target=self.kingBeetleBackground)
-        beetleThread.daemon = True
-        beetleThread.start()
         st = time.time()
         for _ in range(2):
             self.cannon()
@@ -2735,7 +2724,6 @@ class macro:
             self.goToField("blue_flower")
             self.died = False
             self.bossStatus = None
-            st = time.time()
             self.runPath("boss/king_beetle")
             if self.died or self.bossStatus is not None: break
 
@@ -2745,23 +2733,11 @@ class macro:
             self.died = False
         elif self.bossStatus == "defeated":
             self.logger.webhook("", "Defeated: King Beetle", "bright green", "screen", ping_category="ping_mob_events")
-        beetleThread.join()
         self.hourlyReport.addHourlyStat("bug_run_time", time.time()-st)
         self.saveTiming("king_beetle")
         self.reset()
 
-    def tunnelBearBackground(self):
-        while self.bossStatus is None:
-            if self.blueTextImageSearch("died"):
-                self.died = True
-            if self.blueTextImageSearch("tunnelbear", 0.8):
-                self.bossStatus = "defeated"
-
     def tunnelBear(self):
-        self.bossStatus = None
-        bearThread = threading.Thread(target=self.tunnelBearBackground)
-        bearThread.daemon = True
-        bearThread.start()
         st = time.time()
         for _ in range(2):
             self.cannon()
@@ -2769,7 +2745,6 @@ class macro:
             self.goToField("pineapple")
             self.died = False
             self.bossStatus = None
-            st = time.time()
             self.runPath("boss/tunnel_bear")
             if self.died or self.bossStatus is not None: break
 
@@ -2779,7 +2754,6 @@ class macro:
             self.died = False
         elif self.bossStatus == "defeated":
             self.logger.webhook("", "Defeated: Tunnel Bear", "bright green", "screen", ping_category="ping_mob_events")
-        bearThread.join()
         self.hourlyReport.addHourlyStat("bug_run_time", time.time()-st)
         self.saveTiming("tunnel_bear")
         self.reset()
