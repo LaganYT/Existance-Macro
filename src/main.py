@@ -549,14 +549,30 @@ def macro(status, logQueue, updateGUI, run, skipTask):
             if taskId.startswith("kill_"):
                 mob = taskId.replace("kill_", "")
                 
-                # Special cases: coconut_crab and stump_snail
+                # Special cases: coconut_crab, stump_snail, king_beetle, and tunnel_bear
                 if mob == "coconut_crab":
                     if macro.setdat["coconut_crab"] and macro.hasRespawned("coconut_crab", 36*60*60, applyMobRespawnBonus=True):
                         macro.coconutCrab()
                         executedTasks.add(taskId)
                         return True
                     return False
-                
+
+                # King Beetle respawns every 24 hours (20 hours 24 minutes with Gifted Vicious Bee)
+                if mob == "king_beetle":
+                    if macro.setdat["king_beetle"] and macro.hasRespawned("king_beetle", 24*60*60, applyMobRespawnBonus=True):
+                        macro.kingBeetle()
+                        executedTasks.add(taskId)
+                        return True
+                    return False
+
+                # Tunnel Bear respawns every 48 hours (40 hours 48 minutes with Gifted Vicious Bee)
+                if mob == "tunnel_bear":
+                    if macro.setdat["tunnel_bear"] and macro.hasRespawned("tunnel_bear", 48*60*60, applyMobRespawnBonus=True):
+                        macro.tunnelBear()
+                        executedTasks.add(taskId)
+                        return True
+                    return False
+
                 if mob == "stump_snail":
                     if macro.setdat["stump_snail"] and macro.hasRespawned("stump_snail", 96*60*60, applyMobRespawnBonus=True):
                         runTask(macro.stumpSnail)
@@ -1648,7 +1664,7 @@ if __name__ == "__main__":
             macroProc = multiprocessing.Process(target=macro, args=(status, logQueue, updateGUI, run, skipTask), daemon=True)
             macroProc.start()
 
-            logger.webhook("Macro Started", f'Existance Macro v2.13.15\nDisplay: {screenInfo["display_type"]}, {screenInfo["screen_width"]}x{screenInfo["screen_height"]}', "purple")
+            logger.webhook("Macro Started", f'Existance Macro v2.13.16-debug\nDisplay: {screenInfo["display_type"]}, {screenInfo["screen_width"]}x{screenInfo["screen_height"]}', "purple")
             run.value = 2
             gui.setRunState(2)  # Update the global run state
             try:

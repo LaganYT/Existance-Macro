@@ -81,6 +81,13 @@
     style="width: 74%; overflow-y: auto; height: 94vh; display: block"
     id="bss"
   >
+    <button
+      class="purple-button"
+      style="margin-bottom: 15px; width: 200px;"
+      onclick="resetTimings()"
+    >
+      Reset Timings
+    </button>
     <script>
       const parentBSS = document.getElementById("bss");
       buildStandardContainer(parentBSS, "Basic", "", [
@@ -446,6 +453,14 @@
               <div class="drag-item" data-id="kill_coconut_crab" draggable="true">
                 <span class="drag-handle">⋮⋮</span>
                 <span class="drag-text">Kill: Coconut Crab</span>
+              </div>
+              <div class="drag-item" data-id="kill_king_beetle" draggable="true">
+                <span class="drag-handle">⋮⋮</span>
+                <span class="drag-text">Kill: King Beetle</span>
+              </div>
+              <div class="drag-item" data-id="kill_tunnel_bear" draggable="true">
+                <span class="drag-handle">⋮⋮</span>
+                <span class="drag-text">Kill: Tunnel Bear</span>
               </div>
               <div class="drag-item" data-id="mondo_buff" draggable="true">
                 <span class="drag-handle">⋮⋮</span>

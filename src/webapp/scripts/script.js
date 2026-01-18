@@ -173,6 +173,8 @@ function loadDragListOrder(dragListElement, orderArray) {
       kill_spider: "Kill: Spider",
       kill_werewolf: "Kill: Werewolf",
       kill_coconut_crab: "Kill: Coconut Crab",
+      kill_king_beetle: "Kill: King Beetle",
+      kill_tunnel_bear: "Kill: Tunnel Bear",
       mondo_buff: "Collect: Mondo Buff",
       stinger_hunt: "Stinger Hunt",
       auto_field_boost: "Auto Field Boost",
@@ -879,6 +881,19 @@ function resetZoom() {
   translateY = 0;
   zoomedImage.style.transformOrigin = "center center";
   updateImageTransform();
+}
+
+async function resetTimings() {
+  if (confirm("Are you sure you want to reset all timings? This will reset cooldown tracking for all activities.")) {
+    try {
+      await eel.reset_timings()();
+      alert("Timings have been reset!");
+      // Reload settings to update the UI
+      await loadAllSettings();
+    } catch (error) {
+      alert("Error resetting timings: " + error);
+    }
+  }
 }
 
 // Initialize zoom when DOM is ready

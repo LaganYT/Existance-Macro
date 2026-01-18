@@ -2289,6 +2289,14 @@ class macro:
                     self.logger.webhook("", "Sticker Stack on cooldown", "dark brown", "screen")
                     return
                 self.claimStickerStack()
+            elif objective == "honeystorm":
+                self.runPath("collect/honeystorm")
+                
+                self.saveTiming("honeystorm")
+                self.logger.webhook("", "Honey storm collected", "bright green", "screen")
+                self.reset(convert=True)
+                return
+                #credit to laganyt for the path
             else:
                 time.sleep(0.1)
                 self.logger.webhook("", f"Collected: {displayName}", "bright green", "screen")
@@ -2708,7 +2716,22 @@ class macro:
         self.saveTiming("coconut_crab")
         self.reset()
 
-    
+    def kingBeetle(self):
+        self.cannon()
+        self.logger.webhook("","Travelling: King Beetle","dark brown")
+        self.goToField("blue_flower")
+        self.runPath("boss/king_beetle")
+        #credit to rubicorb.v2 for the path
+        self.reset()
+
+    def tunnelBear(self):
+        self.cannon()
+        self.logger.webhook("","Travelling: Tunnel Bear","dark brown")
+        self.goToField("pineapple")
+        self.runPath("boss/tunnel_bear")
+        #credit to laganyt and rubicorb.v2 for the path
+        self.reset()
+
     def goToPlanter(self, planter, field, method):
         global finalKey
         self.cannon()

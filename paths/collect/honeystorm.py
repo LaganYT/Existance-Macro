@@ -1,5 +1,5 @@
 # Navigate to honey storm location and summon it
-# Credit to laganyt for the path
+# Access mergedCollectData from macro module
 import sys
 import os
 # Add src to path if not already there
