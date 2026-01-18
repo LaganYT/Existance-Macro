@@ -24,7 +24,7 @@ while True:
         # Collect rewards
         self.keyboard.walk("d", 1.5)
         self.keyboard.walk("a", 3)
-        time.sleep(1)
+        sleep(1)
         self.saveTiming("tunnel_bear")
         break
     # Check if died

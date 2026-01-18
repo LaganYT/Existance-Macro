@@ -38,7 +38,7 @@ while True:
             self.keyboard.walk("s", 2)
             self.keyboard.walk("a", 0.25)
             self.keyboard.walk("w", 2)
-        time.sleep(1)
+        sleep(1)
         self.saveTiming("king_beetle")
         break
     # Check if died
