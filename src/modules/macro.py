@@ -2716,20 +2716,72 @@ class macro:
         self.saveTiming("coconut_crab")
         self.reset()
 
+    def kingBeetleBackground(self):
+        while self.bossStatus is None:
+            if self.blueTextImageSearch("died"):
+                self.died = True
+            if self.blueTextImageSearch("kingbeetle", 0.8):
+                self.bossStatus = "defeated"
+
     def kingBeetle(self):
-        self.cannon()
-        self.logger.webhook("","Travelling: King Beetle","dark brown")
-        self.goToField("blue_flower")
-        self.runPath("boss/king_beetle")
-        #credit to rubicorb.v2 for the path
+        self.bossStatus = None
+        beetleThread = threading.Thread(target=self.kingBeetleBackground)
+        beetleThread.daemon = True
+        beetleThread.start()
+        st = time.time()
+        for _ in range(2):
+            self.cannon()
+            self.logger.webhook("","Travelling: King Beetle","dark brown")
+            self.goToField("blue_flower")
+            self.died = False
+            self.bossStatus = None
+            st = time.time()
+            self.runPath("boss/king_beetle")
+            if self.died or self.bossStatus is not None: break
+
+        if self.died:
+            self.logger.webhook("", "Died to King Beetle", "dark brown", ping_category="ping_character_deaths")
+            self.reset(convert=False)
+            self.died = False
+        elif self.bossStatus == "defeated":
+            self.logger.webhook("", "Defeated: King Beetle", "bright green", "screen", ping_category="ping_mob_events")
+        beetleThread.join()
+        self.hourlyReport.addHourlyStat("bug_run_time", time.time()-st)
+        self.saveTiming("king_beetle")
         self.reset()
 
+    def tunnelBearBackground(self):
+        while self.bossStatus is None:
+            if self.blueTextImageSearch("died"):
+                self.died = True
+            if self.blueTextImageSearch("tunnelbear", 0.8):
+                self.bossStatus = "defeated"
+
     def tunnelBear(self):
-        self.cannon()
-        self.logger.webhook("","Travelling: Tunnel Bear","dark brown")
-        self.goToField("pineapple")
-        self.runPath("boss/tunnel_bear")
-        #credit to laganyt and rubicorb.v2 for the path
+        self.bossStatus = None
+        bearThread = threading.Thread(target=self.tunnelBearBackground)
+        bearThread.daemon = True
+        bearThread.start()
+        st = time.time()
+        for _ in range(2):
+            self.cannon()
+            self.logger.webhook("","Travelling: Tunnel Bear","dark brown")
+            self.goToField("pineapple")
+            self.died = False
+            self.bossStatus = None
+            st = time.time()
+            self.runPath("boss/tunnel_bear")
+            if self.died or self.bossStatus is not None: break
+
+        if self.died:
+            self.logger.webhook("", "Died to Tunnel Bear", "dark brown", ping_category="ping_character_deaths")
+            self.reset(convert=False)
+            self.died = False
+        elif self.bossStatus == "defeated":
+            self.logger.webhook("", "Defeated: Tunnel Bear", "bright green", "screen", ping_category="ping_mob_events")
+        bearThread.join()
+        self.hourlyReport.addHourlyStat("bug_run_time", time.time()-st)
+        self.saveTiming("tunnel_bear")
         self.reset()
 
     def goToPlanter(self, planter, field, method):

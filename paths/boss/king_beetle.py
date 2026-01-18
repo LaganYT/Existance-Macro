@@ -20,32 +20,18 @@ self.keyboard.keyUp("d")
 self.keyboard.keyDown("s")
 sleep(5)
 self.keyboard.keyUp("s")
-start_time = time.time()
-# Wait for king beetle to be defeated
-while True:
-    # Check for 3 minute timeout (180 seconds)
-    if time.time() - start_time > 180:
-        self.logger.webhook("", "King Beetle on cooldown", "dark brown", "screen")
-        break
-
-    # Check if defeated
-    if self.blueTextImageSearch("kingbeetle", 0.8):
-        # Collect rewards
-        self.keyboard.walk("a", 1)
-        self.keyboard.walk("w", 3)
-        for i in range(3):
-            self.keyboard.walk("a", 0.25)
-            self.keyboard.walk("s", 2)
-            self.keyboard.walk("a", 0.25)
-            self.keyboard.walk("w", 2)
-        sleep(1)
-        self.saveTiming("king_beetle")
-        break
-    # Check if died
-    if self.blueTextImageSearch("died"):
-        self.died = True
-        break
-    # Small delay to prevent excessive CPU usage
+# Continue the movement pattern while boss monitoring happens in background thread
+while self.bossStatus is None and not self.died:
+    self.keyboard.walk("d", 0.25)
+    sleep(0.75)
+# Collect rewards if defeated
+if self.bossStatus == "defeated":
+    self.keyboard.walk("a", 1)
+    self.keyboard.walk("w", 3)
+    for i in range(3):
+        self.keyboard.walk("a", 0.25)
+        self.keyboard.walk("s", 2)
+        self.keyboard.walk("a", 0.25)
+        self.keyboard.walk("w", 2)
     sleep(1)
-sleep(1)
 #credit to rubicorb.v2 for the path

@@ -12,26 +12,12 @@ sleep(1)
 self.keyboard.walk("d", 3.5)
 self.keyboard.walk("s", 0.5)
 
-start_time = time.time()
-while True:
-    # Check for 4 minute timeout (240 seconds)
-    if time.time() - start_time > 240:
-        self.logger.webhook("", "Tunnel Bear on cooldown", "dark brown", "screen")
-        break
-
-    # Check if defeated
-    if self.blueTextImageSearch("tunnelbear", 0.8):
-        # Collect rewards
-        self.keyboard.walk("d", 1.5)
-        self.keyboard.walk("a", 3)
-        sleep(1)
-        self.saveTiming("tunnel_bear")
-        break
-    # Check if died
-    if self.blueTextImageSearch("died"):
-        self.died = True
-        break
-    # Continue the movement pattern
+# Continue the movement pattern while boss monitoring happens in background thread
+while self.bossStatus is None and not self.died:
     self.keyboard.walk("d", 0.25)
     sleep(0.75)
-sleep(1)
+# Collect rewards if defeated
+if self.bossStatus == "defeated":
+    self.keyboard.walk("d", 1.5)
+    self.keyboard.walk("a", 3)
+    sleep(1)
