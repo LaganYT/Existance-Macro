@@ -415,6 +415,16 @@ def syncFieldSettings(setting, value):
         generalData = readSettingsFile(generalSettingsPath)
         generalData[setting] = value
         saveDict(generalSettingsPath, generalData)
+        # If global sync enabled, propagate to all profiles
+        if isGeneralSettingsSyncEnabled():
+            for profile in listProfiles():
+                try:
+                    dst = os.path.join(getProfilesDir(), profile, "generalsettings.txt")
+                    data_all = readSettingsFile(dst) if os.path.exists(dst) else {}
+                    data_all[setting] = value
+                    saveDict(dst, data_all)
+                except Exception:
+                    continue
     except Exception as e:
         print(f"Warning: Could not sync field settings to general settings: {e}")
 
@@ -453,7 +463,21 @@ def incrementProfileSetting(setting, incrValue):
 
 def saveGeneralSetting(setting, value):
     generalsettings_path = os.path.join(getProfilePath(), "generalsettings.txt")
-    saveSettingFile(setting, value, generalsettings_path)
+    # If global sync is enabled, write this general setting to all profiles
+    if isGeneralSettingsSyncEnabled():
+        for profile in listProfiles():
+            try:
+                dst = os.path.join(getProfilesDir(), profile, "generalsettings.txt")
+                # ensure file exists
+                if not os.path.exists(dst):
+                    saveDict(dst, {setting: value})
+                else:
+                    saveSettingFile(setting, value, dst)
+            except Exception:
+                continue
+    else:
+        saveSettingFile(setting, value, generalsettings_path)
+
     # Synchronize field settings with profile settings
     if setting in ["fields", "fields_enabled"]:
         syncFieldSettingsToProfile(setting, value)
@@ -744,3 +768,45 @@ def migrateProfilesToGeneralSettings():
             print("Removed old global generalsettings.txt file")
         except Exception as e:
             print(f"Warning: Failed to remove old global generalsettings.txt file: {e}")
+
+def _get_general_sync_flag_path():
+    """Return path to the general settings sync flag file."""
+    return os.path.join(getSettingsDir(), "generalsettings_sync.txt")
+
+def isGeneralSettingsSyncEnabled():
+    """Return True if generalsettings sync across profiles is enabled."""
+    try:
+        path = _get_general_sync_flag_path()
+        if not os.path.exists(path):
+            return False
+        with open(path, "r") as f:
+            val = f.read().strip().lower()
+        return val in ("1", "true", "yes", "y")
+    except Exception:
+        return False
+
+def setGeneralSettingsSync(enabled):
+    """Enable or disable generalsettings synchronization across profiles.
+
+    If enabling, copy the current profile's generalsettings.txt to all profiles.
+    """
+    try:
+        path = _get_general_sync_flag_path()
+        with open(path, "w") as f:
+            f.write("true" if enabled else "false")
+
+        # If enabling, propagate current profile generalsettings to all profiles
+        if enabled:
+            current_general = os.path.join(getProfilePath(), "generalsettings.txt")
+            if os.path.exists(current_general):
+                data = readSettingsFile(current_general)
+                for profile in listProfiles():
+                    try:
+                        dst = os.path.join(getProfilesDir(), profile, "generalsettings.txt")
+                        saveDict(dst, data)
+                    except Exception:
+                        # continue copying to others even if one fails
+                        continue
+        return True, "General settings sync updated"
+    except Exception as e:
+        return False, f"Failed to update general settings sync: {e}"

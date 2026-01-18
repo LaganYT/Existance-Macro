@@ -11,8 +11,32 @@ async function loadProfiles() {
   // Load profile list
   await loadProfileList();
 
+  // Load generalsettings sync flag and set checkbox
+  try {
+    const enabled = await eel.isGeneralSettingsSyncEnabled()();
+    const cb = document.getElementById("generalsettings-sync-checkbox");
+    if (cb) cb.checked = !!enabled;
+  } catch (e) {
+    console.error("Failed to load generalsettings sync flag", e);
+  }
   // Set up file input event listener after HTML is loaded
   setupFileInputListener();
+}
+
+// Toggle generalsettings sync across profiles
+async function toggleGeneralSettingsSync(enabled) {
+  try {
+    const [success, message] = await eel.setGeneralSettingsSync(enabled)();
+    const statusEl = document.getElementById("generalsettings-sync-status");
+    if (statusEl) {
+      statusEl.innerHTML = `<div class="profile-status ${success ? 'success' : 'error'}">${message}</div>`;
+      setTimeout(() => (statusEl.innerHTML = ""), 4000);
+    }
+    // refresh profile list to reflect propagation if enabled
+    await loadProfileList();
+  } catch (error) {
+    showProfileStatus("create-profile-status", `Error: ${error}`, "error");
+  }
 }
 
 /*

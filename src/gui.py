@@ -184,6 +184,8 @@ eel.expose(settingsManager.saveProfileSetting)
 eel.expose(settingsManager.saveGeneralSetting)
 eel.expose(settingsManager.saveDictProfileSettings)
 eel.expose(settingsManager.initializeFieldSync)
+eel.expose(settingsManager.isGeneralSettingsSyncEnabled)
+eel.expose(settingsManager.setGeneralSettingsSync)
 
 # Profile management functions
 eel.expose(settingsManager.listProfiles)

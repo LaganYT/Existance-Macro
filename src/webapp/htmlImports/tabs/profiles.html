@@ -157,6 +157,24 @@
         </div>
       </div>
 
+      <!-- General Settings Sync Section -->
+      <div class="profile-card">
+        <div class="profile-card-header">
+          <span class="profile-card-title">🔗 Sync General Settings</span>
+        </div>
+        <p style="color: #b9bbbe; margin-bottom: 1rem; font-size: 0.9rem">
+          Keep `generalsettings.txt` in sync across all profiles. When enabled,
+          changes to general settings will be propagated to every profile.
+        </p>
+        <div style="display: flex; align-items: center; gap: 0.75rem">
+          <label style="color: #dcddde; display:flex; align-items:center; gap:0.5rem">
+            <input type="checkbox" id="generalsettings-sync-checkbox" onchange="toggleGeneralSettingsSync(this.checked)">
+            <span>Enable sync across profiles</span>
+          </label>
+        </div>
+        <div id="generalsettings-sync-status"></div>
+      </div>
+
       <!-- Switch Profile Section -->
       <div class="profile-card">
         <div class="profile-card-header">
