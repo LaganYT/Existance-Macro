@@ -222,6 +222,136 @@ def macro(status, logQueue, updateGUI, run, skipTask):
         macro.setdat = get_cached_settings()
         # Check if profile has changed and reload settings if needed
         macro.checkAndReloadSettings()
+        
+        # Check for bot commands (like hard reset planters)
+        bot_command_file = "./data/user/bot_command.json"
+        if os.path.exists(bot_command_file):
+            try:
+                with open(bot_command_file, "r") as f:
+                    command_data = json.load(f)
+                f.close()
+                
+                if command_data.get("command") == "hard_reset_planters":
+                    check_all_fields = command_data.get("check_all_fields", True)
+                    
+                    # Log the start
+                    macro.logger.webhook("Hard Reset Planters", "⚠️ Starting hard reset - this will interrupt current activity", "orange")
+                    
+                    # Get all possible planter locations
+                    planter_fields = ["bamboo", "blue flower", "cactus", "coconut", "mushroom", 
+                                     "pine tree", "pineapple", "pumpkin", "rose", "spider", 
+                                     "strawberry", "sunflower"]
+                    
+                    fields_to_check = []
+                    
+                    if check_all_fields:
+                        # Check every possible field
+                        fields_to_check = planter_fields
+                        macro.logger.webhook("Hard Reset Planters", f"Checking all {len(planter_fields)} possible planter fields", "light blue")
+                    else:
+                        # Only check fields with known planters
+                        # Load current planter data
+                        known_fields = set()
+                        
+                        # Check manual planters
+                        if macro.setdat.get("planters_mode") == 1:
+                            try:
+                                with open("./data/user/manualplanters.txt", "r") as f:
+                                    manual_data_raw = f.read()
+                                if manual_data_raw.strip():
+                                    manual_data = ast.literal_eval(manual_data_raw)
+                                    for field in manual_data.get("fields", []):
+                                        if field and field in planter_fields:
+                                            known_fields.add(field)
+                            except:
+                                pass
+                        
+                        # Check auto planters
+                        elif macro.setdat.get("planters_mode") == 2:
+                            try:
+                                with open("./data/user/auto_planters.json", "r") as f:
+                                    auto_data = json.load(f)
+                                for planter in auto_data.get("planters", []):
+                                    field = planter.get("field", "")
+                                    if field and field in planter_fields:
+                                        known_fields.add(field)
+                            except:
+                                pass
+                        
+                        fields_to_check = list(known_fields)
+                        if fields_to_check:
+                            macro.logger.webhook("Hard Reset Planters", f"Checking {len(fields_to_check)} fields with known planters", "light blue")
+                        else:
+                            macro.logger.webhook("Hard Reset Planters", "No known planter locations found", "yellow")
+                    
+                    # Collect planters from all locations
+                    planters_collected = 0
+                    planters_not_found = 0
+                    
+                    for field in fields_to_check:
+                        # Try to collect planter from this field
+                        # We'll attempt collection and if it fails, we still mark it as "collected"
+                        try:
+                            # Use a dummy planter name since we don't know what's there
+                            # The collectPlanter method will try to find any planter
+                            result = macro.collectPlanter("", field)
+                            if result:
+                                planters_collected += 1
+                                macro.logger.webhook("Hard Reset Planters", f"✓ Collected planter from {field.title()}", "green")
+                            else:
+                                planters_not_found += 1
+                                macro.logger.webhook("Hard Reset Planters", f"✗ No planter found at {field.title()} (marked as collected)", "yellow")
+                        except Exception as e:
+                            planters_not_found += 1
+                            macro.logger.webhook("Hard Reset Planters", f"✗ Error at {field.title()}: {str(e)} (marked as collected)", "red")
+                    
+                    # Reset planter data files
+                    try:
+                        # Reset manual planters
+                        with open("./data/user/manualplanters.txt", "w") as f:
+                            f.write("")  # Clear the file
+                        
+                        # Reset auto planters
+                        auto_reset_data = {
+                            "planters": [
+                                {"planter": "", "nectar": "", "field": "", "harvest_time": 0, "nectar_est_percent": 0},
+                                {"planter": "", "nectar": "", "field": "", "harvest_time": 0, "nectar_est_percent": 0},
+                                {"planter": "", "nectar": "", "field": "", "harvest_time": 0, "nectar_est_percent": 0}
+                            ],
+                            "nectar_last_field": {
+                                "comforting": "",
+                                "refreshing": "",
+                                "satisfying": "",
+                                "motivating": "",
+                                "invigorating": ""
+                            }
+                        }
+                        with open("./data/user/auto_planters.json", "w") as f:
+                            json.dump(auto_reset_data, f, indent=3)
+                        
+                        macro.logger.webhook("Hard Reset Planters", f"✓ Planter data reset complete", "green")
+                    except Exception as e:
+                        macro.logger.webhook("Hard Reset Planters", f"Error resetting planter data: {str(e)}", "red")
+                    
+                    # Final summary
+                    summary = f"Hard Reset Complete!\n"
+                    summary += f"• Planters collected: {planters_collected}\n"
+                    summary += f"• Planters not found (marked as collected): {planters_not_found}\n"
+                    summary += f"• Planter timer has been reset"
+                    macro.logger.webhook("Hard Reset Planters", summary, "bright green", ping_category="ping_conversion_events")
+                    
+                    # Reset after hard reset
+                    macro.reset(convert=True)
+                    
+                # Remove the command file after processing
+                os.remove(bot_command_file)
+                
+            except Exception as e:
+                macro.logger.webhook("Bot Command Error", f"Error processing bot command: {str(e)}", "red")
+                try:
+                    os.remove(bot_command_file)
+                except:
+                    pass
 
         # Migration from old boolean flags to macro_mode is now handled in settings loader
 

@@ -2707,12 +2707,13 @@ class macro:
         self.hourlyReport.addHourlyStat("bug_run_time", time.time()-st)
         self.saveTiming("coconut_crab")
         self.reset()
-
     
     def goToPlanter(self, planter, field, method):
         global finalKey
         self.cannon()
-        self.logger.webhook("", f"Travelling: {planter.title()} Planter ({field.title()}), {method.title()}", "dark brown")
+        # Handle empty planter name for hard reset
+        planter_display = planter.title() if planter else "Unknown"
+        self.logger.webhook("", f"Travelling: {planter_display} Planter ({field.title()}), {method.title()}", "dark brown")
         self.goToField(field, "north")
         #move from center of field to planter spot
         finalKey = None
@@ -2889,11 +2890,13 @@ class macro:
         def updateHourlyTime():
             self.hourlyReport.addHourlyStat("misc_time", time.time()-st)
         
+        # Handle empty planter name for hard reset
+        planter_display = planter.title() if planter else "Unknown"
 
         for _ in range(2):
             if self.goToPlanter(planter, field, "collect"): 
                 break
-            self.logger.webhook("",f"Unable to find Planter: {planter.title()}", "dark brown", "screen")
+            self.logger.webhook("",f"Unable to find Planter: {planter_display}", "dark brown", "screen")
             self.reset()
         else:
             updateHourlyTime()
@@ -2901,7 +2904,7 @@ class macro:
         
         self.keyboard.press("e")
         self.clickYes()
-        self.logger.webhook("",f"Looting: {planter.title()} planter","bright green", "screen", ping_category="ping_conversion_events")
+        self.logger.webhook("",f"Looting: {planter_display} planter","bright green", "screen", ping_category="ping_conversion_events")
         self.keyboard.multiWalk(["s","d"], 0.87)
         self.nmLoot(9, 5, "a")
         self.setMobTimer(field)

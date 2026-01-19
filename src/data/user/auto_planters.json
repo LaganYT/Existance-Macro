@@ -1,18 +1,18 @@
 {
    "planters": [
       {
-         "planter": "",
-         "nectar": "",
-         "field": "",
-         "harvest_time": 0,
-         "nectar_est_percent": 0
+         "planter": "blue clay",
+         "nectar": "comforting",
+         "field": "bamboo",
+         "harvest_time": 1768716987.214567,
+         "nectar_est_percent": 10.0
       },
       {
-         "planter": "",
-         "nectar": "",
-         "field": "",
-         "harvest_time": 0,
-         "nectar_est_percent": 0
+         "planter": "tacky",
+         "nectar": "comforting",
+         "field": "pine tree",
+         "harvest_time": 1768716987.214567,
+         "nectar_est_percent": 10.4
       },
       {
          "planter": "",
@@ -23,7 +23,7 @@
       }
    ],
    "nectar_last_field": {
-      "comforting": "",
+      "comforting": "pine tree",
       "refreshing": "",
       "satisfying": "",
       "motivating": "",

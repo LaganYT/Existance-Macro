@@ -347,6 +347,50 @@ def discordBot(token, run, status, skipTask, recentLogs=None, initial_message_in
         run.value = 4
         await interaction.response.send_message("Macro is rejoining")
     
+    @bot.tree.command(name = "hardresetplanters", description = "⚠️ Collect all planters and reset planter timer (interrupts macro)")
+    @app_commands.describe(checkallfields="Check every possible field (true) or only known planter locations (false)")
+    async def hard_reset_planters(interaction: discord.Interaction, checkallfields: bool = True):
+        """
+        Hard reset planters - collects all planters from all locations and resets planter timer.
+        Note: This interrupts whatever the macro is currently doing.
+        If unable to find a planter, it will be marked as collected anyway.
+        """
+        await interaction.response.defer()
+        
+        try:
+            # Write command to trigger file
+            command_data = {
+                "command": "hard_reset_planters",
+                "check_all_fields": checkallfields,
+                "timestamp": time.time()
+            }
+            
+            with open("./data/user/bot_command.json", "w") as f:
+                json.dump(command_data, f, indent=3)
+            
+            # Create embed with warning
+            embed = discord.Embed(
+                title="⚠️ Hard Reset Planters - Starting",
+                description="This will interrupt the macro and collect all planters.",
+                color=0xff6600
+            )
+            embed.add_field(
+                name="Settings",
+                value=f"**Check All Fields:** {'Yes - Will check every possible field' if checkallfields else 'No - Only check fields with known planters'}",
+                inline=False
+            )
+            embed.add_field(
+                name="⚠️ Important",
+                value="• This interrupts current macro activity\n• Planters not found will be marked as collected\n• Planter timer will be reset",
+                inline=False
+            )
+            embed.set_footer(text="Command triggered - macro will process next cycle")
+            
+            await interaction.followup.send(embed=embed)
+            
+        except Exception as e:
+            await interaction.followup.send(f"❌ Error triggering hard reset planters: {str(e)}")
+    
     @bot.tree.command(name = "logs", description = "Show the last 10 macro actions from the log")
     async def show_logs(interaction: discord.Interaction):
         """Show the last 10 actions from the macro log"""
@@ -1674,6 +1718,8 @@ def discordBot(token, run, status, skipTask, recentLogs=None, initial_message_in
         embed.add_field(name="🐛 **Mob Runs**", value="`/mobs` - View mob configuration\n`/enablemob <mob>` - Enable mob run\n`/disablemob <mob>` - Disable mob run", inline=False)
 
         # embed.add_field(name="📁 **Profile Management**", value="`/profiles` - List available profiles\n`/currentprofile` - Show current profile\n`/switchprofile <name>` - Switch profile", inline=False)
+        
+        embed.add_field(name="🌱 **Planter Management**", value="`/hardresetplanters [checkallfields]` - ⚠️ Collect all planters and reset timer (interrupts macro)\n  • `checkallfields=true` (default) - Check every possible field\n  • `checkallfields=false` - Only check fields with known planters\n  • **Note:** This interrupts current macro activity", inline=False)
 
         embed.add_field(name="📊 **Status & Monitoring**", value="`/status` - Get macro status and current task\n`/logs` - Show recent macro actions\n`/taskqueue` - Show current task queue\n`/battery` - Check battery status\n`/streamurl` - Get stream URL", inline=False)
         
