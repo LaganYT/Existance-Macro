@@ -3860,7 +3860,7 @@ class macro:
                         "mountain top": [["mountain", "top"]],
                     }
                     # ignore detected lines with these words, reduces false positives
-                    ignore = {"strawberry", "strawberries", "blueberry", "blueberries", 
+                    ignore = {"strawberry", "strawberries", "blueberry", "blueberries",
                     "seed", "seeds", "pineapple", "pineapples", "honey", "from"}
 
                     def ignore2(field, text):
@@ -3928,7 +3928,7 @@ class macro:
                         if "field" in dice:
                             boostedField = None
                             for cf in field:
-                                for pattern in fields[cf]:  
+                                for pattern in fields[cf]:
                                     if set(pattern).issubset(tokens):
                                         if not ignore2(cf, bluetexts):
                                             boostedField = cf
@@ -3958,7 +3958,7 @@ class macro:
                                     self.keyboard.press("o")
                                 if diceslot == 0: self.toggleInventory("close")
                                 self.saveAFB("AFB_dice_cd")
-                                if glitter: 
+                                if glitter:
                                     self.AFBglitter = True
                                     self.saveAFB("AFB_glitter_cd")
                                 return returnVal
@@ -3973,7 +3973,7 @@ class macro:
                                     self.keyboard.press("o")
                                 if diceslot == 0: self.toggleInventory("close")
                                 self.saveAFB("AFB_dice_cd")
-                                if glitter: 
+                                if glitter:
                                     self.AFBglitter = True
                                     self.saveAFB("AFB_glitter_cd")
                                 return returnVal
